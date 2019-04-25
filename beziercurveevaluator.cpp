@@ -28,7 +28,6 @@ void BezierCurveEvaluator::evaluateCurve(const std::vector<Point>& ptvCtrlPts,
 		Vec4f Y(v0.y, v1.y, v2.y, v3.y);
 ;		for (float j = 0; j <= 1; j += 1.0 / 20) {
 			Vec4f T(pow(j, 3.0), pow(j, 2.0), j, 1);
-			Vec4f m = T * B;
 			float x = T * B * X;
 			float y = T * B * Y;
 			ptvEvaluatedCurvePts.push_back(Point(x, y));
@@ -86,7 +85,6 @@ void BezierCurveEvaluator::evaluateCurve(const std::vector<Point>& ptvCtrlPts,
 			Vec4f Y(v0.y, v1.y, v2.y, v3.y);
 			for (float j = 0; j <= 1; j += 1.0 / 20) {
 				Vec4f T(pow(j, 3.0), pow(j, 2.0), j, 1);
-				Vec4f m = T * B;
 				float x = T * B * X;
 				float y = T * B * Y;
 				ptvEvaluatedCurvePts.push_back(Point(x, y));
@@ -105,7 +103,6 @@ void BezierCurveEvaluator::evaluateCurve(const std::vector<Point>& ptvCtrlPts,
 			Y = Vec4f(v0.y, v1.y, v2.y, v3.y);
 			for (float j = 0; j <= 1; j += 1.0 / 20) {
 				Vec4f T(pow(j, 3.0), pow(j, 2.0), j, 1);
-				Vec4f m = T * B;
 				float x = T * B * X;
 				float y = T * B * Y;
 				ptvEvaluatedCurvePts.push_back(Point(x, y));
