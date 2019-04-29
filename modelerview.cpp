@@ -124,6 +124,7 @@ void ModelerView::draw()
 		ps->computeForcesAndUpdateParticles(t);
 		ps->drawParticles(t);
 	}
+	//printf("%f\n", t);
 }
 
 
