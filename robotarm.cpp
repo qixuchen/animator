@@ -12,6 +12,7 @@
 
 #include <FL/gl.h>
 #include <stdlib.h>
+#include <time.h>
 
 #define M_DEFAULT 2.0f
 #define M_OFFSET 3.0f
@@ -23,9 +24,15 @@
 #define COLOR_GREEN		0.0f, 1.0f, 0.0f
 #define COLOR_BLUE		0.0f, 0.0f, 1.0f
 
+// Forward declaration
+Mat4f getModelViewMatrix();
+void SpawnParticles(Mat4f cameraTransform);
+//ParticleSystem *ps = ModelerApplication::Instance()->GetParticleSystem();
+
+
 enum SampleModelControls
 {
-	XPOS=0, YPOS, ZPOS, ROTATE, LEFTUPPERROTATE, RIGHTUPPERROTATE, DETAILS, FRAME_ALL, NUMCONTROLS
+	XPOS=0, YPOS, ZPOS, ROTATE, LEFTUPPERROTATE, RIGHTUPPERROTATE, PARTICLE_COUNT, NUMCONTROLS
 };
 
 class SampleModel : public ModelerView
@@ -58,7 +65,7 @@ void SampleModel::draw()
 
 	ModelerView::draw();
 
-
+	Mat4f cameraMatrix = getModelViewMatrix();
 
 
 	// draw the floor	
@@ -91,40 +98,45 @@ void SampleModel::draw()
 	glRotated(VAL(ROTATE), 0.0, 1.0, 0.0);
 	glRotated(90, 0.0, 1.0, 0.0);
 	glTranslated(0, 0, -1.25);
-	if (VAL(DETAILS) >= 1) {
-		drawCylinder(2.4, 0.25, 0.25);
-	}
+//	if (VAL(DETAILS) >= 1) {
+	drawCylinder(2.4, 0.25, 0.25);
+//	}
 	//draw the left upper arm
 	glPushMatrix();
-	if (VAL(DETAILS) >= 2)
-		drawCylinder(0.2, 0.3, 0.3);
+//	if (VAL(DETAILS) >= 2)
+	drawCylinder(0.2, 0.3, 0.3);
 	glTranslated(0.0, 0.0, 0.1);
 	glRotated(-90, 0.0, 1.0, 0.0);
 	glRotated(VAL(LEFTUPPERROTATE), 1.0, 0.0, 0.0);
 	glRotated(115, 1.0, 0.0, 0.0);
-	if (VAL(DETAILS) >= 2)
-		drawCylinder(1.0, 0.2, 0.3);
+//	if (VAL(DETAILS) >= 2)
+	drawCylinder(1.0, 0.2, 0.3);
 	glTranslated(0, 0, 1.2);
 
 	//draw the left lower arm
 	glPushMatrix();
-	if (VAL(DETAILS) >= 3)
-		drawSphere(0.25);
+//	if (VAL(DETAILS) >= 3)
+	drawSphere(0.25);
 	glRotated(-65, 1.0, 0.0, 0.0);
-	if (VAL(DETAILS) >= 3)
+//	if (VAL(DETAILS) >= 3)
 		drawCylinder(1.85, 0.2, 0.3);
 	glTranslated(0.0, 0.0, 1.85);
 
 	//draw the left hand 
 	glPushMatrix();
-	if (VAL(DETAILS) >= 4)
-		drawSphere(0.2);
+//	if (VAL(DETAILS) >= 4)
+	drawSphere(0.2);
 	glTranslated(-0.25, -0.05, 0);
-	if (VAL(DETAILS) >= 4)
-		drawBox(0.1, 0.2, 0.5);
+//	if (VAL(DETAILS) >= 4)
+	drawBox(0.1, 0.2, 0.5);
 	glTranslated(0.4, 0, 0);
-	if (VAL(DETAILS) >= 4)
-		drawBox(0.1, 0.2, 0.5);
+//	if (VAL(DETAILS) >= 4)
+	drawBox(0.1, 0.2, 0.5);
+
+	// Add particle here.
+
+	SpawnParticles(cameraMatrix);
+
 	glPopMatrix();
 	glPopMatrix();
 	glPopMatrix();
@@ -132,35 +144,35 @@ void SampleModel::draw()
 	glTranslated(0, 0, 2.4);
 	//draw the right upper arm
 	glPushMatrix();
-	if (VAL(DETAILS) >= 2)
-		drawCylinder(0.2, 0.3, 0.3);
+//	if (VAL(DETAILS) >= 2)
+	drawCylinder(0.2, 0.3, 0.3);
 	glTranslated(0.0, 0.0, 0.1);
 	glRotated(-90, 0.0, 1.0, 0.0);
 	glRotated(VAL(RIGHTUPPERROTATE), 1.0, 0.0, 0.0);
 	glRotated(115, 1.0, 0.0, 0.0);
-	if (VAL(DETAILS) >= 2)
-		drawCylinder(1.0, 0.2, 0.3);
+//	if (VAL(DETAILS) >= 2)
+	drawCylinder(1.0, 0.2, 0.3);
 	glTranslated(0, 0, 1.2);
 
 	//draw the right lower arm
 	glPushMatrix();
-	if (VAL(DETAILS) >= 3)
-		drawSphere(0.25);
+//	if (VAL(DETAILS) >= 3)
+	drawSphere(0.25);
 	glRotated(-65, 1.0, 0.0, 0.0);
-	if (VAL(DETAILS) >= 3)
-		drawCylinder(1.85, 0.2, 0.3);
+///	if (VAL(DETAILS) >= 3)
+	drawCylinder(1.85, 0.2, 0.3);
 	glTranslated(0.0, 0.0, 1.85);
 
 	//draw the right hand 
 	glPushMatrix();
-	if (VAL(DETAILS) >= 4)
-		drawSphere(0.2);
+//	if (VAL(DETAILS) >= 4)
+	drawSphere(0.2);
 	glTranslated(-0.25, -0.05, 0);
-	if (VAL(DETAILS) >= 4)
-		drawBox(0.1, 0.2, 0.5);
+//	if (VAL(DETAILS) >= 4)
+	drawBox(0.1, 0.2, 0.5);
 	glTranslated(0.4, 0, 0);
-	if (VAL(DETAILS) >= 4)
-		drawBox(0.1, 0.2, 0.5);
+//	if (VAL(DETAILS) >= 4)
+	drawBox(0.1, 0.2, 0.5);
 	glPopMatrix();
 	glPopMatrix();
 	glPopMatrix();
@@ -180,22 +192,100 @@ int main()
 	controls[ROTATE] = ModelerControl("Rotate", -135, 135, 1, 0);
 	controls[LEFTUPPERROTATE] = ModelerControl("Left Upper Arm", -100, 60, 1, -20);
 	controls[RIGHTUPPERROTATE] = ModelerControl("Right Upper Arm", -100, 60, 1, -20);
-	controls[DETAILS] = ModelerControl("Level of details", 0, 4, 1, 4);
-	controls[FRAME_ALL] = ModelerControl("Frame all", 0, 1, 1, 0);
+	//controls[DETAILS] = ModelerControl("Level of details", 0, 4, 1, 4);
+	//controls[FRAME_ALL] = ModelerControl("Frame all", 0, 1, 1, 0);
+	controls[PARTICLE_COUNT] = ModelerControl("Particle count", 0, 5, 1, 5);
     
-
+	srand(time(0));
 
 	// You should create a ParticleSystem object ps here and then
 	// call ModelerApplication::Instance()->SetParticleSystem(ps)
 	// to hook it up to the animator interface.
+	ParticleSystem *ps = new ParticleSystem;
+	ModelerApplication::Instance()->SetParticleSystem(ps);
 
     ModelerApplication::Instance()->Init(&createSampleModel, controls, NUMCONTROLS);
 
     return ModelerApplication::Instance()->Run();
 }
 
+Mat4f getModelViewMatrix()
+{
+	/**************************
+	**
+	**	GET THE OPENGL MODELVIEW MATRIX
+	**
+	**	Since OpenGL stores it's matricies in
+	**	column major order and our library
+	**	use row major order, we will need to
+	**	transpose what OpenGL gives us before returning.
+	**
+	**	Hint:  Use look up glGetFloatv or glGetDoublev
+	**	for how to get these values from OpenGL.
+	**
+	*******************************/
 
+	GLfloat m[16];
+	glGetFloatv(GL_MODELVIEW_MATRIX, m);
+	Mat4f matMV(m[0], m[1], m[2], m[3],
+		m[4], m[5], m[6], m[7],
+		m[8], m[9], m[10], m[11],
+		m[12], m[13], m[14], m[15]);
 
+	return matMV.transpose(); // convert to row major
+}
+void SpawnParticles(Mat4f CameraTransforms)
+{
+	/*
+	...
+		... Get the current MODELVIEW matrix.
+		... "Undo" the camera transforms from the MODELVIEW matrix
+		... by multiplying Inverse(CameraTransforms) * CurrentModelViewMatrix.
+		... Store the result of this in a local variable called WorldMatrix.
+		...
+		*/
+	Mat4f cur = getModelViewMatrix();
+	Mat4f worldMatrix = CameraTransforms.inverse();
+	worldMatrix = worldMatrix * cur;
+
+	/*****************************************************************
+	**
+	**	At this point, we have the transformation that will convert a point
+	**  in the local coordinate system to a point in the world coordinate
+	**  system.
+	**
+	**  We need to find the actual point in world coordinates
+	**  where particle should be spawned.  This is simply
+	**  "the origin of the local coordinate system" transformed by
+	**  the WorldMatrix.
+	**
+	******************************************************************/
+
+	Vec4f worldPoint = worldMatrix * Vec4f(0, 0, 0, 1);
+	Vec3f pos(worldPoint[0], worldPoint[1], worldPoint[2]);
+
+	/*****************************************************************
+	**
+	**	Now that we have the particle's initial position, we
+	**  can finally add it to our system!
+	**
+	***************************************************************/
+	
+	ParticleSystem *ps = ModelerApplication::Instance()->GetParticleSystem();
+	ps->clearBuffer();
+	for (int i = 0; i < VAL(PARTICLE_COUNT); i++) {
+		Vec3f velocity(5, 5, 5);
+		for (int i = 0; i < 3; i++) {
+			int randNum = rand() % 10;
+			randNum -= 5;
+			velocity[i] += randNum;
+		}
+
+		Particle particle(pos, velocity);
+
+		ps->addPoint(particle);
+	}
+}
 
 /*
 

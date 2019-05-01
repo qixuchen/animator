@@ -17,7 +17,10 @@
 #define __PARTICLE_SYSTEM_H__
 
 #include "vec.h"
-
+#include "particle.h"
+#include <vector>
+#include <map>
+#include "modelerdraw.h"
 
 
 class ParticleSystem {
@@ -62,6 +65,9 @@ public:
 	// of baked particles (without leaking memory).
 	virtual void clearBaked();	
 
+	void addPoint(Particle p);
+
+	void clearBuffer();
 
 
 	// These accessor fxns are implemented for you
@@ -88,6 +94,10 @@ protected:
 	/** General state variables **/
 	bool simulate;						// flag for simulation mode
 	bool dirty;							// flag for updating ui (don't worry about this)
+
+	map<double, vector<Particle>> points;
+	vector<Particle> pointsToAdd;
+	float lastTime;
 
 };
 
